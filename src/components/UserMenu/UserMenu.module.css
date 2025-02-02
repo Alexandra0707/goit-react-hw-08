@@ -1,19 +1,56 @@
-.div {
+.userMenuContainer {
   display: flex;
   justify-content: center;
-  gap: 10px;
+  align-items: center;
 }
 
-.btn {
-  display: flex;
-  height: 40px;
-  width: 100px;
-  text-align: center;
-  border-radius: 10px;
-  margin-top: 15px;
+.logoutButton {
+  display: inline-block;
+  padding: 12px 24px;
+  background-color: #9c4dcc;
+  color: white;
+  border-radius: 4px;
+  text-transform: none;
+  transition: background-color 0.3s ease;
+  border: none;
+  font-size: 1.1rem;
+  cursor: pointer;
+  line-height: 1;
+  box-sizing: border-box;
+  height: auto;
 }
 
-.svg {
-  height: 20px;
-  width: 20px;
+.logoutButton:hover {
+  background-color: #7b1fa2;
+  transform: scale(1.05);
+}
+
+.logoutButton:focus {
+  outline: none;
+  border: 2px solid #9c4dcc;
+}
+
+.logoutButton:active {
+  background-color: #6a1b9a;
+}
+
+@media (max-width: 600px) {
+  .logoutButton {
+    padding: 10px 20px;
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .logoutButton {
+    padding: 12px 24px;
+    font-size: 1rem;
+  }
+}
+
+@media (min-width: 1200px) {
+  .logoutButton {
+    padding: 16px 32px;
+    font-size: 1.1rem;
+  }
 }

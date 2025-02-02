@@ -1,59 +1,82 @@
-import { createAsyncThunk } from "@reduxjs/toolkit";
-import { taskAPI } from "../auth/operations";
+import { createAsyncThunk } from '@reduxjs/toolkit';
+import axios from 'axios';
+
+const API_URL = 'https://connections-api.goit.global';
 
 export const fetchContacts = createAsyncThunk(
-  "contacts/fetchAll",
+  'contacts/fetchAll',
   async (_, thunkAPI) => {
     try {
-      const response = await taskAPI.get("/contacts");
-      return response.data;
+      console.log('Fetching contacts...');
+      const { data } = await axios.get(`${API_URL}/contacts`);
+      return data;
     } catch (error) {
+      console.error('Error fetching contacts:', error);
       return thunkAPI.rejectWithValue(error.message);
     }
   }
 );
 
 export const addContact = createAsyncThunk(
-  "contacts/addContact",
-  async (body, thunkAPI) => {
+  'contacts/addContact',
+  async (contactData, { rejectWithValue }) => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      return rejectWithValue('No token found');
+    }
     try {
-      const response = await taskAPI.post(`/contacts`, body);
-      return response.data;
+      const { data } = await axios.post(`${API_URL}/contacts`, contactData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      return data;
     } catch (error) {
-      return thunkAPI.rejectWithValue(error.message);
+      return rejectWithValue(error.message);
     }
   }
 );
 
 export const deleteContact = createAsyncThunk(
-  "contacts/deleteContact",
-  async (id, thunkAPI) => {
+  'contacts/deleteContact',
+  async (contactId, { rejectWithValue }) => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      return rejectWithValue('No token found');
+    }
     try {
-      const response = await taskAPI.delete(`/contacts/${id}`);
-      return response.data;
+      await axios.delete(`${API_URL}/contacts/${contactId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      return contactId;
     } catch (error) {
-      return thunkAPI.rejectWithValue(error.message);
+      return rejectWithValue(error.message);
     }
   }
 );
-export const refreshUser = createAsyncThunk(
-  "auth/refresh",
-  async (_, thunkAPI) => {
-    const state = thunkAPI.getState();
-    const savedToken = state.auth.token;
 
-    if (!savedToken) {
-      return thunkAPI.rejectWithValue("Token does not exist!");
+export const editContact = createAsyncThunk(
+  'contacts/editContact',
+  async (contactData, { rejectWithValue }) => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      return rejectWithValue('No token found');
     }
-
     try {
-      setAuthHeader(savedToken);
-      const { data } = await taskAPI.get("users/current");
+      const { data } = await axios.patch(
+        `${API_URL}/contacts/${contactData.id}`,
+        { name: contactData.name, number: contactData.number },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       return data;
     } catch (error) {
-      return thunkAPI.rejectWithValue(
-        error.response?.data?.message || error.message
-      );
+      return rejectWithValue(error.response?.data?.message || error.message);
     }
   }
 );

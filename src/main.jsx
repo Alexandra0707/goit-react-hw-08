@@ -1,25 +1,41 @@
-import { createRoot } from "react-dom/client";
-import "./index.css";
-import App from "./components/App/App";
-import { Provider } from "react-redux";
-import { persistor, store } from "./redux/store";
-import { BrowserRouter } from "react-router-dom";
-import { PersistGate } from "redux-persist/integration/react";
-import { Toaster } from "react-hot-toast";
+import ReactDOM from 'react-dom/client';
+import { Provider } from 'react-redux';
+import { BrowserRouter } from 'react-router-dom';
+import { store } from './redux/store';
+import App from './components/App';
+import './index.css';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { PersistGate } from 'redux-persist/integration/react';
+import { persistor } from './redux/store';
 
-createRoot(document.getElementById("root")).render(
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: '#7b1fa2',
+    },
+    secondary: {
+      main: '#9c4dcc',
+    },
+    background: {
+      default: '#f3e5f5',
+    },
+    text: {
+      primary: '#4a148c',
+    },
+  },
+  typography: {
+    fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
+  },
+});
+
+ReactDOM.createRoot(document.getElementById('root')).render(
   <Provider store={store}>
     <BrowserRouter>
-      <PersistGate loading={null} persistor={persistor}>
-        <App />
-        <Toaster
-          position="top-right"
-          reverseOrder={false}
-          toastOptions={{
-            duration: 2000,
-          }}
-        />
-      </PersistGate>
+      <ThemeProvider theme={theme}>
+        <PersistGate loading={<div>Loading...</div>} persistor={persistor}>
+          <App />
+        </PersistGate>
+      </ThemeProvider>
     </BrowserRouter>
   </Provider>
 );

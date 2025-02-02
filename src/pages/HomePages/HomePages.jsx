@@ -1,15 +1,17 @@
-import s from "./HomePages.module.css";
-import { PiHeartLight } from "react-icons/pi";
+import styles from './HomePage.module.css';
 
-const HomePages = () => {
+const HomePage = () => {
   return (
-    <div className={s.homeDiv}>
-      <h2 className={s.title}>
-        Welcome contacts page
-        <PiHeartLight />
-      </h2>
-      <p className={s.list}>If you want to continue working, please log in!</p>
+    <div className={styles.container}>
+      <h1 className={styles.title}>Welcome to the Phonebook App!</h1>
+      <p className={styles.description}>
+        This is the main page where you can manage your contacts.
+      </p>
+      <p className={styles.additionalDescription}>
+        Here, you can view, add, and update your contacts in the phonebook.
+      </p>
     </div>
   );
 };
-export default HomePages;
+
+export default HomePage;
