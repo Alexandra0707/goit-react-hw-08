@@ -1,56 +1,115 @@
-.ContactForm {
+.contactList {
+  background-color: #f3e5f5;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  max-width: 800px;
+  margin: 20px auto;
   display: flex;
   flex-direction: column;
-  gap: 25px;
-  width: 360px;
-  height: 300px;
-  justify-content: center;
-  padding-left: 30px;
-  border-radius: 5px;
+  align-items: center;
+  overflow: hidden;
 }
 
-.labelForm {
-  font-weight: 500;
-  font-size: 16px;
-  line-height: 1.5;
-  letter-spacing: 0.02em;
-  text-align: left;
+.contactList ul {
+  list-style-type: none;
+  padding-left: 0;
+  margin: 0;
+  width: 100%;
+}
+
+.contactList li:not(:last-child) {
+  margin-bottom: 10px;
+}
+.contactItem {
   display: flex;
-  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #fff;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 700px;
+  box-sizing: border-box;
 }
 
-.spanForm {
-  font-size: 18px;
-  font-weight: 500;
-  color: black;
-  text-align: left;
+.contactInfo {
+  font-size: 1rem;
+  color: #5e2a8c;
 }
 
-.inputForm {
-  border: 2px solid rgb(248, 243, 243);
-  border-radius: 4px;
-  width: 264px;
-  height: 40px;
-  background-color: transparent;
-  font-size: 12px;
-  line-height: 2;
-  letter-spacing: 0.04em;
-  padding-left: 16px;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.15);
-  color: #000;
-  outline: none;
-}
-.list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  padding: 0;
+.contactActions button {
+  background-color: #9c4dcc;
+  color: white;
+  padding: 8px 16px;
+  border-radius: 8px;
+  border: none;
+  margin-left: 10px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background-color 0.3s ease;
 }
 
-.listItem {
-  display: flex;
-  padding: 8px;
-  width: 380px;
-  border: 2px solid rgb(248, 243, 243);
-  border-radius: 5px;
+.contactActions button:hover {
+  background-color: #7b1fa2;
+}
+
+.noContactsMessage {
+  text-align: center;
+  font-size: 1.2rem;
+  color: #9c4dcc;
+}
+
+@media screen and (max-width: 600px) {
+  .contactList {
+    padding: 15px;
+    max-width: 100%;
+  }
+
+  .contactItem {
+    padding: 10px;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .contactActions button {
+    width: 100%;
+    margin-left: 0;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .contactList {
+    padding: 20px;
+    max-width: 90%;
+  }
+
+  .contactItem {
+    padding: 12px;
+  }
+
+  .contactActions button {
+    font-size: 0.85rem;
+  }
+}
+
+@media screen and (min-width: 1200px) {
+  .contactList {
+    padding: 30px;
+    max-width: 1000px;
+  }
+
+  .contactItem {
+    padding: 20px;
+  }
+
+  .contactInfo {
+    font-size: 1.2rem;
+  }
+
+  .contactActions button {
+    padding: 10px 20px;
+    font-size: 1rem;
+  }
 }

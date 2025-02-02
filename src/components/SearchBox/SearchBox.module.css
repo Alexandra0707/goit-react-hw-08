@@ -1,20 +1,68 @@
-.container {
-  padding-top: 15px;
+.searchBoxContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 20px;
 }
 
-.labelSearch {
-  display: block;
+.searchInput {
+  width: 100%;
+  max-width: 400px;
+  padding: 10px;
+  font-size: 1rem;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  background-color: #f3e5f5;
+  color: #5e2a8c;
+  transition: border-color 0.3s ease;
 }
 
-.inputSearch {
-  border: 2px solid rgb(248, 243, 243);
-  background-color: transparent;
-  border-radius: 4px;
-  width: 390px;
-  height: 40px;
-  font-size: 15px;
-  line-height: 2;
-  letter-spacing: 0.04em;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.15);
+.searchInput:focus {
   outline: none;
+  border-color: #9c4dcc;
+}
+
+.searchInput:hover {
+  border-color: #7b1fa2;
+}
+
+.searchInput::placeholder {
+  color: #5e2a8c;
+  opacity: 0.7;
+}
+
+@media (max-width: 600px) {
+  .searchBoxContainer {
+    margin: 10px;
+  }
+
+  .searchInput {
+    font-size: 0.9rem;
+    padding: 8px;
+    max-width: 90%;
+  }
+}
+
+@media (max-width: 768px) {
+  .searchBoxContainer {
+    margin: 15px;
+  }
+
+  .searchInput {
+    font-size: 1rem;
+    padding: 9px;
+    max-width: 80%;
+  }
+}
+
+@media (min-width: 1200px) {
+  .searchBoxContainer {
+    margin: 25px;
+  }
+
+  .searchInput {
+    font-size: 1.1rem;
+    padding: 12px;
+    max-width: 500px;
+  }
 }

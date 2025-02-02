@@ -1,112 +1,108 @@
-import { ErrorMessage, Field, Form, Formik } from "formik";
-import { useDispatch, useSelector } from "react-redux";
-import { selectIsLoggedIn } from "../../redux/auth/selectors";
-import { login } from "../../redux/auth/operations";
-import { Link, Navigate } from "react-router-dom";
-import s from "./LoginForm.module.css";
-import { TfiArrowCircleLeft } from "react-icons/tfi";
-import * as Yup from "yup";
-import { useState } from "react";
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { Formik, Field, Form, ErrorMessage } from 'formik';
+import * as Yup from 'yup';
+import { TextField, Button, Typography } from '@mui/material';
+import { login } from '../../redux/auth/operations';
+import toast from 'react-hot-toast';
+import styles from './LoginForm.module.css';
 
 const LoginForm = () => {
-  const isLoggedId = useSelector(selectIsLoggedIn);
   const dispatch = useDispatch();
-  const [showPassword, setShowPassword] = useState(false);
-  const togglePasswordVisibility = () => {
-    setShowPassword(!showPassword);
-  };
-
-  const handleSubmit = (values, options) => {
-    dispatch(login(values));
-    options.resetForm();
-  };
-  const contactFormSchema = Yup.object().shape({
-    email: Yup.string()
-      .email("Invalid email address")
-      .min(3, "Too Short...")
-      .required("Please, enter the email"),
-    password: Yup.string()
-      .min(6, "To Short...")
-      .required("Please, enter your password"),
-  });
+  const navigate = useNavigate();
 
   const initialValues = {
-    email: "",
-    password: "",
+    email: '',
+    password: '',
   };
 
-  if (isLoggedId) {
-    return <Navigate to="/contacts" />;
-  }
+  const validationSchema = Yup.object({
+    email: Yup.string()
+      .email('Invalid email format')
+      .required('Email is required'),
+    password: Yup.string()
+      .min(6, 'Password must be at least 6 characters')
+      .required('Password is required'),
+  });
+
+  const handleSubmit = (values, { setSubmitting }) => {
+    dispatch(login(values))
+      .unwrap()
+      .then(() => {
+        toast.success('Login successful!');
+        navigate('/contacts');
+      })
+      .catch(error => {
+        toast.error('Login failed. Please check your credentials.');
+        console.error('Login error:', error);
+      })
+      .finally(() => {
+        setSubmitting(false);
+      });
+  };
 
   return (
-    <>
-      <Link className={s.btnGoBack} to={"/"}>
-        <TfiArrowCircleLeft />
-        Go Home
-      </Link>
-      <div className={s.loginDiv}>
-        <h2 className={s.title}>Log In</h2>
-        <Formik
-          onSubmit={handleSubmit}
-          initialValues={initialValues}
-          validationSchema={contactFormSchema}
-        >
-          <Form className={s.form}>
-            <label className={s.label}>
-              Email
+    <div className={styles.formContainer}>
+      <Formik
+        initialValues={initialValues}
+        validationSchema={validationSchema}
+        onSubmit={handleSubmit}
+      >
+        {({ isSubmitting }) => (
+          <Form className={styles.form}>
+            <Typography variant="h4" className={styles.formTitle}>
+              Login
+            </Typography>
+
+            <div className={styles.inputContainer}>
               <Field
-                className={s.field}
                 name="email"
-                placeholder="Enter  your email..."
+                type="email"
+                placeholder="Email"
+                as={TextField}
+                fullWidth
+                variant="outlined"
+                className={styles.input}
+                required
               />
-              <ErrorMessage className={s.error} name="email" component="span" />
-            </label>
-            <label className={s.label}>
-              Password
-              <div className={s.passwordWrapper}>
-                <Field
-                  className={s.field}
-                  type={showPassword ? "text" : "password"}
-                  name="password"
-                  placeholder="Enter your password..."
-                />
-                <button
-                  type="button"
-                  className={s.showPasswordBtn}
-                  onClick={togglePasswordVisibility}
-                >
-                  {" "}
-                  {showPassword ? "Hide" : "Show"}
-                </button>
-              </div>
               <ErrorMessage
-                className={s.error}
-                name="password"
-                component="span"
+                name="email"
+                component="div"
+                className={styles.errorMessage}
               />
-            </label>
-            <button className={s.btn} type="submit">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className={s.svg}
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
-                />
-              </svg>
-              Log In
-            </button>
+            </div>
+
+            <div className={styles.inputContainer}>
+              <Field
+                name="password"
+                type="password"
+                placeholder="Password"
+                as={TextField}
+                fullWidth
+                variant="outlined"
+                className={styles.input}
+                required
+              />
+              <ErrorMessage
+                name="password"
+                component="div"
+                className={styles.errorMessage}
+              />
+            </div>
+
+            <Button
+              type="submit"
+              variant="contained"
+              disabled={isSubmitting}
+              className={styles.submitButton}
+            >
+              {isSubmitting ? 'Logging in...' : 'Login'}
+            </Button>
           </Form>
-        </Formik>
-      </div>
-    </>
+        )}
+      </Formik>
+    </div>
   );
 };
+
 export default LoginForm;

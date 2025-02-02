@@ -1,128 +1,128 @@
-import s from "./RegistrationForm.module.css";
-import { ErrorMessage, Field, Form, Formik } from "formik";
-import { useDispatch } from "react-redux";
-import { Link, useNavigate } from "react-router-dom";
-import toast from "react-hot-toast";
-import { register } from "../../redux/auth/operations";
-import { TfiArrowCircleLeft } from "react-icons/tfi";
-import * as Yup from "yup";
-import { useState } from "react";
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { Formik, Field, Form, ErrorMessage } from 'formik';
+import * as Yup from 'yup';
+import { register } from '../../redux/auth/operations';
+import toast from 'react-hot-toast';
+import styles from './RegistrationForm.module.css';
 
-const RegisterForm = () => {
+const RegistrationForm = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [showPassword, setShowPassword] = useState(false);
-  const togglePasswordVisibility = () => {
-    setShowPassword(!showPassword);
+
+  const initialValues = {
+    name: '',
+    email: '',
+    password: '',
+    confirmPassword: '',
   };
-  const handleSubmit = (values, options) => {
+
+  const validationSchema = Yup.object({
+    name: Yup.string().required('Name is required'),
+    email: Yup.string()
+      .email('Invalid email format')
+      .required('Email is required'),
+    password: Yup.string()
+      .min(6, 'Password must be at least 6 characters')
+      .required('Password is required'),
+    confirmPassword: Yup.string()
+      .oneOf([Yup.ref('password'), null], 'Passwords must match')
+      .required('Confirm Password is required'),
+  });
+
+  const handleSubmit = (values, { setSubmitting }) => {
     dispatch(register(values))
       .unwrap()
-      .then((res) => {
-        toast(`Welcome ${res?.user?.name}`);
-        navigate("/contacts");
+      .then(() => {
+        toast.success('Registration successful!');
+        navigate('/contacts');
       })
-      .catch(() => {
-        toast.error("This account already exists. Please try logging.");
+      .catch(error => {
+        toast.error('Registration failed. Please try again.');
+        console.error('Registration error:', error);
+      })
+      .finally(() => {
+        setSubmitting(false);
       });
   };
 
-  const contactFormSchema = Yup.object().shape({
-    name: Yup.string()
-      .min(3, "Too Short...")
-      .max(20, "Too Long!")
-      .required("Please, enter your name"),
-    email: Yup.string()
-      .email("Invalid email address")
-      .min(3, "Too Short...")
-      .required("Please, enter the email"),
-    password: Yup.string()
-      .min(6, "To Short...")
-      .required("Please, enter your password"),
-  });
-  const initialValues = {
-    name: "",
-    email: "",
-    password: "",
-  };
   return (
-    <>
-      <Link className={s.btnGoBack} to={"/"}>
-        <TfiArrowCircleLeft />
-        Go Home
-      </Link>
-      <div className={s.registerDiv}>
-        <h2 className={s.title}>Create your account</h2>
-        <Formik
-          onSubmit={handleSubmit}
-          initialValues={initialValues}
-          validationSchema={contactFormSchema}
-        >
-          <Form className={s.form}>
-            <label className={s.label}>
-              Name
+    <div className={styles.formContainer}>
+      <Formik
+        initialValues={initialValues}
+        validationSchema={validationSchema}
+        onSubmit={handleSubmit}
+      >
+        {({ isSubmitting }) => (
+          <Form className={styles.form}>
+            <div className={styles.formField}>
               <Field
-                className={s.field}
+                className={styles.input}
+                type="text"
                 name="name"
-                placeholder="Enter name..."
+                placeholder="Name"
+                required
               />
-              <ErrorMessage className={s.error} name="name" component="span" />
-            </label>
-            <label className={s.label}>
-              Email
-              <Field
-                className={s.field}
-                name="email"
-                placeholder="Enter email..."
-              />
-              <ErrorMessage className={s.error} name="email" component="span" />
-            </label>
-            <label className={s.label}>
-              Password
-              <div className={s.passwordWrapper}>
-                <Field
-                  className={s.field}
-                  name="password"
-                  type={showPassword ? "text" : "password"}
-                  placeholder="Enter password..."
-                />
-                <button
-                  type="button"
-                  className={s.showPasswordBtn}
-                  onClick={togglePasswordVisibility}
-                >
-                  {" "}
-                  {showPassword ? "Hide" : "Show"}
-                </button>
-              </div>
               <ErrorMessage
-                className={s.error}
-                name="password"
-                component="span"
+                name="name"
+                component="div"
+                className={styles.errorMessage}
               />
-            </label>
-
-            <button className={s.btn} type="submit">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className={s.svg}
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
-                />
-              </svg>
-              Create account
+            </div>
+            <div className={styles.formField}>
+              <Field
+                className={styles.input}
+                type="email"
+                name="email"
+                placeholder="Email"
+                required
+              />
+              <ErrorMessage
+                name="email"
+                component="div"
+                className={styles.errorMessage}
+              />
+            </div>
+            <div className={styles.formField}>
+              <Field
+                className={styles.input}
+                type="password"
+                name="password"
+                placeholder="Password"
+                required
+              />
+              <ErrorMessage
+                name="password"
+                component="div"
+                className={styles.errorMessage}
+              />
+            </div>
+            <div className={styles.formField}>
+              <Field
+                className={styles.input}
+                type="password"
+                name="confirmPassword"
+                placeholder="Confirm Password"
+                required
+              />
+              <ErrorMessage
+                name="confirmPassword"
+                component="div"
+                className={styles.errorMessage}
+              />
+            </div>
+            <button
+              type="submit"
+              className={styles.submitButton}
+              disabled={isSubmitting}
+            >
+              {isSubmitting ? 'Registering...' : 'Register'}
             </button>
           </Form>
-        </Formik>
-      </div>
-    </>
+        )}
+      </Formik>
+    </div>
   );
 };
-export default RegisterForm;
+
+export default RegistrationForm;

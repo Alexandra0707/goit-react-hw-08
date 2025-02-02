@@ -1,53 +1,46 @@
-import { ErrorMessage, Field, Form, Formik } from "formik";
-import s from "./ContactForm.module.css";
-import { nanoid } from "nanoid";
-import * as Yup from "yup";
-import { useDispatch } from "react-redux";
-import { addContact } from "../../redux/contacts/operations";
+import { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { addContact } from '../../redux/contacts/operations';
+import toast from 'react-hot-toast';
+import styles from './ContactForm.module.css';
 
 const ContactForm = () => {
+  const [name, setName] = useState('');
+  const [number, setNumber] = useState('');
   const dispatch = useDispatch();
 
-  const handleSubmit = (values, actions) => {
-    dispatch(
-      addContact({
-        ...values,
-        id: nanoid(),
-      })
-    );
-    actions.resetForm();
+  const handleSubmit = e => {
+    e.preventDefault();
+    dispatch(addContact({ name, number }));
+    toast.success('Contact added successfully!');
+    setName('');
+    setNumber('');
   };
 
-  const contactFormSchema = Yup.object().shape({
-    name: Yup.string().min(3, "Too Short!").required("Please, enter name"),
-    number: Yup.string()
-      .min(9, "Invalid phone number format")
-      .required("Please, enter number"),
-  });
-
   return (
-    <Formik
-      initialValues={{ name: "", number: "" }}
-      onSubmit={handleSubmit}
-      validationSchema={contactFormSchema}
-    >
-      <Form className={s.ContactForm}>
-        <label className={s.labelForm}>
-          <span className={s.spanForm}>Name</span>
-          <Field className={s.inputForm} type="text" name="name" />
-          <ErrorMessage className={s.error} name="name" component="span" />
-        </label>
-        <label className={s.labelForm}>
-          <span className={s.spanForm}>Number</span>
-          <Field className={s.inputForm} type="text" name="number" />
-          <ErrorMessage className={s.error} name="number" component="span" />
-        </label>
-
-        <button className={s.btnForm} type="submit">
-          Add contact
-        </button>
-      </Form>
-    </Formik>
+    <form onSubmit={handleSubmit} className={styles.form}>
+      <h2>Add Contact</h2>
+      <input
+        type="text"
+        placeholder="Name"
+        value={name}
+        onChange={e => setName(e.target.value)}
+        required
+        className={styles.input}
+      />
+      <input
+        type="text"
+        placeholder="Phone number"
+        value={number}
+        onChange={e => setNumber(e.target.value)}
+        required
+        className={styles.input}
+      />
+      <button type="submit" className={styles.button}>
+        Add contact
+      </button>
+    </form>
   );
 };
+
 export default ContactForm;

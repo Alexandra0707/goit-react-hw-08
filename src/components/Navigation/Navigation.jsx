@@ -1,26 +1,13 @@
-import clsx from "clsx";
-import { NavLink } from "react-router-dom";
-import s from "./Navigation.module.css";
-import { useSelector } from "react-redux";
-import { selectIsLoggedIn } from "../../redux/auth/selectors";
+import { Link } from 'react-router-dom';
+import styles from './Navigation.module.css';
 
-const buildLinkClass = ({ isActive }) => {
-  return clsx(s.link, isActive && s.active);
-};
-
-const Navigation = () => {
-  const isLoggedIn = useSelector(selectIsLoggedIn);
-  return (
-    <nav className={s.nav}>
-      <NavLink className={buildLinkClass} to="/">
-        Home
-      </NavLink>
-      {isLoggedIn && (
-        <NavLink className={buildLinkClass} to="/contacts">
-          Contacts
-        </NavLink>
-      )}
-    </nav>
-  );
-};
-export default Navigation;
+export const Navigation = () => (
+  <nav className={styles.nav}>
+    <Link to="/" className={styles.linkButton}>
+      Home
+    </Link>
+    <Link to="/contacts" className={styles.linkButton}>
+      Contacts
+    </Link>
+  </nav>
+);

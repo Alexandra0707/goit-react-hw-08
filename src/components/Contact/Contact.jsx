@@ -1,30 +1,21 @@
-import s from "./Contact.module.css";
-import { FaPhoneAlt } from "react-icons/fa";
-import { FaUser } from "react-icons/fa";
-import { useDispatch } from "react-redux";
-import { deleteContact } from "../../redux/contacts/operations";
+import PropTypes from 'prop-types';
+import styles from './Contact.module.css';
 
-const Contact = ({ name, number, id }) => {
-  const dispatch = useDispatch();
+export const Contact = ({ name, number, onDelete }) => {
   return (
-    <>
-      <div className={s.container}>
-        <div className={s.wrapper}>
-          <p>
-            <FaUser />
-            {name}
-          </p>
-          <p>
-            <FaPhoneAlt />
-            {number}
-          </p>
-        </div>
-        <button type="button" onClick={() => dispatch(deleteContact(id))}>
-          Delete
-        </button>
-      </div>
-    </>
+    <div className={styles.contact}>
+      <p className={styles.contactText}>
+        {name}: {number}
+      </p>
+      <button className={styles.deleteBtn} onClick={onDelete}>
+        Delete
+      </button>
+    </div>
   );
 };
 
-export default Contact;
+Contact.propTypes = {
+  name: PropTypes.string.isRequired,
+  number: PropTypes.string.isRequired,
+  onDelete: PropTypes.func.isRequired,
+};
