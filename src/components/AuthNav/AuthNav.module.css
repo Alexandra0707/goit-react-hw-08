@@ -1,0 +1,17 @@
+.nav {
+  display: flex;
+  justify-content: center;
+  column-gap: 10px;
+}
+
+.link {
+  font-weight: bold;
+  color: white;
+  font-size: 1.4rem;
+  text-decoration: none;
+}
+
+.active {
+  text-decoration: underline;
+  color: black;
+}

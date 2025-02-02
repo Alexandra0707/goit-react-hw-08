@@ -1,11 +1,12 @@
 import { useId } from "react";
 import s from "./SearchBox.module.css";
 import { useDispatch, useSelector } from "react-redux";
-import { findContact, selectFilter } from "../../redux/filtersSlice";
+import { selectNameFilter } from "../../redux/filters/selectors";
+import { findContact } from "../../redux/filters/slice";
 
 const SearchBox = () => {
   const dispatch = useDispatch();
-  const filter = useSelector(selectFilter);
+  const filter = useSelector(selectNameFilter);
   const contactsId = useId();
   return (
     <>

@@ -3,7 +3,7 @@ import s from "./ContactForm.module.css";
 import { nanoid } from "nanoid";
 import * as Yup from "yup";
 import { useDispatch } from "react-redux";
-import { addContact } from "../../redux/contactsOps";
+import { addContact } from "../../redux/contacts/operations";
 
 const ContactForm = () => {
   const dispatch = useDispatch();
@@ -19,13 +19,10 @@ const ContactForm = () => {
   };
 
   const contactFormSchema = Yup.object().shape({
-    name: Yup.string()
-      .min(3, "Too Short!")
-      .max(50, "Too Long!")
-      .required("Required"),
+    name: Yup.string().min(3, "Too Short!").required("Please, enter name"),
     number: Yup.string()
       .min(9, "Invalid phone number format")
-      .required("Required"),
+      .required("Please, enter number"),
   });
 
   return (

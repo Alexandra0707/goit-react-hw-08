@@ -1,0 +1,25 @@
+.homeDiv {
+  display: flex;
+  justify-content: center;
+  padding-top: 120px;
+  flex-direction: column;
+}
+
+.title {
+  text-align: center;
+  font-size: 25px;
+  font-weight: 700;
+}
+
+.title svg {
+  color: rgb(253, 251, 251);
+}
+
+.list {
+  color: white;
+  font-size: 18px;
+  font-weight: 400;
+  text-align: center;
+  justify-content: center;
+  padding: 0;
+}
