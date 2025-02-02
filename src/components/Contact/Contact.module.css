@@ -1,0 +1,40 @@
+.container {
+  display: flex;
+  row-gap: 2px;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 5px;
+  width: 360px;
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+p {
+  display: flex;
+  align-items: center;
+  padding-left: 15px;
+  column-gap: 6px;
+}
+
+button {
+  width: 80px;
+  height: 40px;
+  font-size: 18px;
+  font-weight: 500;
+  border: 2px solid rgb(13, 13, 14);
+  cursor: pointer;
+  border-color: rgb(133, 130, 130);
+  background-color: rgb(235, 235, 232);
+  color: rgb(54, 52, 52);
+  padding: 5px;
+  border-radius: 5px;
+  justify-content: center;
+  align-items: center;
+}
+
+button:active {
+  background-color: rgb(160, 159, 165);
+}
