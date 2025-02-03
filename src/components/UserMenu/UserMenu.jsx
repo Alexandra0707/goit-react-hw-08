@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { logout } from '../../redux/auth/operations';
-import styles from './Navigation.module.css';
+import styles from '../UserMenu.module.css';
 
 export const UserMenu = () => {
   const dispatch = useDispatch();
